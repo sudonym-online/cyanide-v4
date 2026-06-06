@@ -1,8 +1,12 @@
 <script>
-    import Window from "./lib/components/Window.svelte";    
+    import Window from "./lib/components/Window.svelte";
+    import Cyanide from "./lib/apps/Cyanide.svelte";
     // @ts-ignore
-    let swindows = $state([]);
+    let windows = $state([]);
     let context = $state("Nothing is happening...");
+    $effect(() => {
+        console.log("hello from cyanide!");
+    });
 </script>
 
 <section class="apps">
@@ -59,15 +63,13 @@
         onClose={() => (windows = windows.filter((w) => w.id !== win.id))}
         onMinimize={() => (windows = windows.filter((w) => w.id !== win.id))}
     >
-        <h1>
-            {win.type === "cyanide"
-                ? "Cyanide"
-                : win.type === "sulfur"
-                  ? "Sulfur"
-                  : win.type === "fluoride"
-                    ? "Fluoride"
-                    : ""}
-        </h1>
+        {#if win.type === "cyanide"}
+            <Cyanide />
+        {:else if win.type === "sulfur"}
+            <!-- <Sulfur /> -->
+        {:else if win.type === "fluoride"}
+            <!-- <Fluoride /> -->
+        {/if}
     </Window>
 {/each}
 

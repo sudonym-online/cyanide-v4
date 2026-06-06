@@ -1,16 +1,20 @@
-<!-- 
-game json structure
+<script>
+    let src = $state(
+        "https://cdn.jsdelivr.net/gh/sudonym-sudo/cyanide-assets@main/Balatro/balatro.html",
+    );
+</script>
 
-frontend:
-- name 
-- imageSrc
-- addDate
-- fixedDate
-- genre
-backend:
-- type [
-    link : a url that will get embeded
-    html : a url that will fetch html from and embed that
-    proxy : a url that will proxy the content of the game
-]
--->
+<iframe
+    {src}
+    class="game-frame"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
+></iframe>
+
+<style>
+    .game-frame {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: white;
+    }
+</style>

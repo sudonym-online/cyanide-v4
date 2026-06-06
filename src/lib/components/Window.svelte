@@ -10,7 +10,7 @@
         x: 0,
         y: 0,
         width: 0,
-        height: 0
+        height: 0,
     });
 
     let grabX = 0;
@@ -21,7 +21,7 @@
         startX: 0,
         startY: 0,
         startWidth: 0,
-        startHeight: 0
+        startHeight: 0,
     });
 </script>
 
@@ -32,8 +32,14 @@
             y = e.clientY - grabY;
         }
         if (isResizing) {
-            width = Math.max(100, resizeBuffer.startWidth + (e.clientX - resizeBuffer.startX));
-            height = Math.max(100, resizeBuffer.startHeight + (e.clientY - resizeBuffer.startY));
+            width = Math.max(
+                100,
+                resizeBuffer.startWidth + (e.clientX - resizeBuffer.startX),
+            );
+            height = Math.max(
+                100,
+                resizeBuffer.startHeight + (e.clientY - resizeBuffer.startY),
+            );
         }
     }}
     onpointerup={() => {
@@ -42,11 +48,13 @@
     }}
 />
 
-<div class="window" 
-style:left="{x}px" 
-style:top="{y}px"
-style:width="{width}px"
-style:height="{height}px">
+<div
+    class="window"
+    style:left="{x}px"
+    style:top="{y}px"
+    style:width="{width}px"
+    style:height="{height}px"
+>
     {#if name}
         <div
             class="window-header"
@@ -83,7 +91,7 @@ style:height="{height}px">
                             x: x,
                             y: y,
                             width: width,
-                            height: height
+                            height: height,
                         };
                         x = 0;
                         y = 0;
@@ -95,29 +103,32 @@ style:height="{height}px">
                         width = maximizeBuffer.width;
                         height = maximizeBuffer.height;
                     }
-
-                    
                 }}>＋</button
             >
         </div>
     {/if}
     {@render children?.()}
-    <div class="window-resize" role="button" tabindex="0" onpointerdown={(e) => {
-        e.stopPropagation();
-        isResizing = true;
-        resizeBuffer = {
-            startX: e.clientX,
-            startY: e.clientY,
-            startWidth: width,
-            startHeight: height
-        };
-    }}>></div>
-
+    <div
+        class="window-resize"
+        role="button"
+        tabindex="0"
+        onpointerdown={(e) => {
+            e.stopPropagation();
+            isResizing = true;
+            resizeBuffer = {
+                startX: e.clientX,
+                startY: e.clientY,
+                startWidth: width,
+                startHeight: height,
+            };
+        }}
+    >
+        >
+    </div>
 </div>
 
 <style>
     .window {
-  
         background-color: white;
         border: 1px solid #333;
         position: absolute;
