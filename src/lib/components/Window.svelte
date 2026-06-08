@@ -107,7 +107,9 @@
             >
         </div>
     {/if}
-    {@render children?.()}
+    <div class="window-content">
+        <slot />
+    </div>
     <div
         class="window-resize"
         role="button"
@@ -133,6 +135,15 @@
         border: 1px solid #333;
         position: absolute;
         user-select: none;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .window-content {
+        flex: 1;
+        overflow: hidden;
+        position: relative;
     }
 
     .window-header {
