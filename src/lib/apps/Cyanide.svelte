@@ -1,53 +1,44 @@
 <script>
-    let gameUrl = $state(
-        "https://cdn.jsdelivr.net/gh/sudonym-sudo/cyanide-assets@main/Balatro/balatro.html",
-    );
-    let iframeSrc = $state("about:blank");
+    let gameUrl = $state("/games/Balatro/balatro.html");
+    let src = $state("about:blank");
 
+    // @ts-ignore
     async function loadGame(url) {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            let html = await response.text();
-            console.log("HTML length:", html.length);
-            console.log("HTML starts with:", html.slice(0, 100));
+        src = url;
+    }
 
-            html = html.replace(/<!DOCTYPE html>/gi, (match, offset) =>
-                offset === 0 ? match : "",
-            );
-
-            const blob = new Blob([html], { type: "text/html" });
-            const blobUrl = URL.createObjectURL(blob);
-            console.log("Blob URL:", blobUrl);
-            iframeSrc = blobUrl;
-        } catch (error) {
-            console.error("Failed to load game:", error);
-            iframeSrc = "about:blank";
-        }
+    async function fetchGames() {
+        
     }
 
     $effect(() => {
         loadGame(gameUrl);
-        return () => {
-            if (iframeSrc !== "about:blank") {
-                URL.revokeObjectURL(iframeSrc);
-            }
-        };
     });
 </script>
 
-<iframe
-    src={iframeSrc}
-    class="game-frame"
-    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"
-    onload={() => console.log("Iframe loaded, src:", iframeSrc)}
-></iframe>
+<div class="iframe-container">
+    <iframe
+        {src}
+        title="content"
+        frameborder="0"
+        allowfullscreen
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
+    ></iframe>
+</div>
 
 <style>
-    .game-frame {
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        height: 80vh;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    iframe {
         width: 100%;
         height: 100%;
         border: none;
-        background: white;
     }
 </style>
