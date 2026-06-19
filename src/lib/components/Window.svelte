@@ -1,5 +1,5 @@
 <script>
-    let { children, name, onClose, onMinimize, theme = "default" } = $props();
+    let { children, name, onClose, onMinimize, theme = "default", onContext, onFocus } = $props();
 
     let x = $state(100);
     let y = $state(200);
@@ -28,8 +28,12 @@
 <svelte:window
     onpointermove={(e) => {
         if (isDragging) {
-            x = e.clientX - grabX;
-            y = e.clientY - grabY;
+            const container = document.querySelector('.desktop-container');
+            const rect = container.getBoundingClientRect();
+            const newX = e.clientX - grabX;
+            const newY = e.clientY - grabY;
+            x = Math.max(0, Math.min(newX, rect.width - width));
+            y = Math.max(0, Math.min(newY, rect.height - height));
         }
         if (isResizing) {
             width = Math.max(
@@ -49,7 +53,7 @@
 />
 
 <div
-    class="window {isMaximized ? 'maximized' : ''} {isDragging
+    class="window inset-gradient-border {isMaximized ? 'maximized' : ''} {isDragging
         ? 'dragging'
         : ''}"
     style:left="{x}px"
@@ -84,6 +88,7 @@
           : theme === "fluoride"
             ? "#A7F3D0"
             : "#e0e0e0"}
+    onpointerdown={() => onFocus?.()}
 >
     {#if name}
         <div
@@ -100,10 +105,12 @@
                 isMaximized = !isMaximized;
                 if (isMaximized) {
                     maximizeBuffer = { x, y, width, height };
+                    const container = document.querySelector('.desktop-container');
+                    const rect = container.getBoundingClientRect();
                     x = 0;
                     y = 0;
-                    width = window.innerWidth;
-                    height = window.innerHeight;
+                    width = rect.width;
+                    height = rect.height;
                 } else {
                     x = maximizeBuffer.x;
                     y = maximizeBuffer.y;
@@ -119,6 +126,8 @@
                         e.stopPropagation();
                         onClose?.(e);
                     }}
+                    onpointerenter={() => onContext?.(`Close ${name}`)}
+                    onpointerleave={() => onContext?.("Nothing is happening...")}
                     aria-label="Close"
                 >
                     <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -136,6 +145,8 @@
                         e.stopPropagation();
                         onMinimize?.(e);
                     }}
+                    onpointerenter={() => onContext?.(`Minimize ${name}`)}
+                    onpointerleave={() => onContext?.("Nothing is happening...")}
                     aria-label="Minimize"
                 >
                     <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -154,10 +165,12 @@
                         isMaximized = !isMaximized;
                         if (isMaximized) {
                             maximizeBuffer = { x, y, width, height };
+                            const container = document.querySelector('.desktop-container');
+                            const rect = container.getBoundingClientRect();
                             x = 0;
                             y = 0;
-                            width = window.innerWidth;
-                            height = window.innerHeight;
+                            width = rect.width;
+                            height = rect.height;
                         } else {
                             x = maximizeBuffer.x;
                             y = maximizeBuffer.y;
@@ -165,6 +178,8 @@
                             height = maximizeBuffer.height;
                         }
                     }}
+                    onpointerenter={() => onContext?.(`Maximize ${name}`)}
+                    onpointerleave={() => onContext?.("Nothing is happening...")}
                     aria-label="Maximize"
                 >
                     <svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
@@ -208,11 +223,7 @@
 <style>
     .window {
         background-color: var(--theme-bg, #1e1e22);
-        border: none;
         border-radius: 12px;
-        box-shadow:
-            0 12px 40px rgba(0, 0, 0, 0.6),
-            0 0 1px rgba(255, 255, 255, 0.1);
         position: absolute;
         display: flex;
         flex-direction: column;
@@ -344,10 +355,7 @@
         flex: 1;
         overflow: auto;
         position: relative;
-        background: var(
-            --theme-bg,
-            #1e1e22
-        );
+        background: transparent;
         color: #ffffff;
     }
 

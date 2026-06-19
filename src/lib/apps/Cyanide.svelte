@@ -2,7 +2,6 @@
     let gameUrl = $state("/games/Balatro/balatro.html");
     let src = $state("about:blank");
 
-    // @ts-ignore
     async function loadGame(url) {
         src = url;
     }
