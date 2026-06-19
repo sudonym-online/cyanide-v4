@@ -91,7 +91,6 @@
             role="button"
             tabindex="0"
             onpointerdown={(e) => {
-                // Prevent dragging if clicking on the traffic light buttons
                 if (e.target.closest(".traffic-lights")) return;
                 isDragging = true;
                 grabX = e.clientX - x;
@@ -209,15 +208,15 @@
 <style>
     .window {
         background-color: var(--theme-bg, #1e1e22);
-        border: none; /* Removed outline */
+        border: none;
         border-radius: 12px;
         box-shadow:
             0 12px 40px rgba(0, 0, 0, 0.6),
-            0 0 1px rgba(255, 255, 255, 0.1); /* clean border shadow rim */
+            0 0 1px rgba(255, 255, 255, 0.1);
         position: absolute;
         display: flex;
         flex-direction: column;
-        overflow: hidden; /* Clips content to border radius */
+        overflow: hidden;
         transition:
             background-color 0.25s ease,
             box-shadow 0.25s ease;
@@ -235,9 +234,9 @@
     }
 
     .window-header {
-        height: 28px; /* Thinner top bar */
-        background: var(--theme-header-bg, #18181b); /* Themed header bar */
-        border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Subtle dark border separating header */
+        height: 28px;
+        background: var(--theme-header-bg, #18181b);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.2);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -247,11 +246,10 @@
         transition: background-color 0.25s ease;
     }
 
-    /* Traffic Lights Layout */
     .traffic-lights {
         display: flex;
         gap: 8px;
-        width: 60px; /* Symmetry with the spacer */
+        width: 60px;
         align-items: center;
     }
 
@@ -259,7 +257,7 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.05); /* very light border for OLED dark theme */
+        border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 0;
         margin: 0;
         cursor: default;
@@ -278,7 +276,7 @@
     }
 
     .window-header:hover .traffic-light svg {
-        opacity: 1; /* Show icons only on header hover */
+        opacity: 1;
     }
 
     .traffic-light.close {
@@ -318,15 +316,15 @@
 
     .window-title {
         background-color: var(--theme-title-bg, rgba(255, 255, 255, 0.08));
-        border: none; /* Removed title border */
+        border: none;
         border-radius: 6px;
         padding: 2px 10px;
         font-family:
             -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
             Arial, sans-serif;
-        font-size: 11px; /* Slightly smaller for thinner header */
+        font-size: 11px;
         font-weight: 600;
-        color: var(--theme-title-color, #e0e0e0); /* Match theme color */
+        color: var(--theme-title-color, #e0e0e0);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -339,7 +337,7 @@
     }
 
     .spacer {
-        width: 60px; /* Mirrors traffic lights width for exact center title alignment */
+        width: 60px;
     }
 
     .window-content {
@@ -349,11 +347,10 @@
         background: var(
             --theme-bg,
             #1e1e22
-        ); /* Content area matches themed window background */
+        );
         color: #ffffff;
     }
 
-    /* Invisible resize area at bottom right corner (macOS standard) */
     .window-resize {
         position: absolute;
         bottom: 0;
